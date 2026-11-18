@@ -1,0 +1,77 @@
+{
+  "event": {
+    "title": "Secret Santa 2026",
+    "date": "Saturday, 19 December 2026",
+    "time": "6:30 PM",
+    "place": "Rooftop garden, 123 Lê Lợi, District 1, HCMC",
+    "budget": "200,000 VND",
+    "note": "Wrap it, label it with the receiver's name, and keep it a secret until the party!"
+  },
+  "participants": [
+    {
+      "name": "hariwon",
+      "wishlist": "ghế pres SC 26-27\nmóc khóa/lanyard\nbánh kẹo\n\nVUI LÀ CHÍNH",
+      "passcode": "172347",
+      "fb": "https://www.facebook.com/hung.chan.vu.2025",
+      "questions": "Có thể ôm mimi không?\nNên làm gì khi bị xoay bài?\na An 2k mấy?"
+    },
+    {
+      "name": "Timi",
+      "wishlist": "Cổ phiếu nvidia, VF3, Sony FX 30",
+      "passcode": "658242",
+      "fb": "https://www.facebook.com/share/1CKNRfPHKD/",
+      "questions": "Ai chỉ An Đoàn làm form vậy?"
+    },
+    {
+      "name": "LMK",
+      "wishlist": "C106, đồ handmade, xe mô hình",
+      "passcode": "657438",
+      "fb": "https://www.facebook.com/share/1GGtdMkzQN/?mibextid=wwXIfr",
+      "questions": "i dunno"
+    },
+    {
+      "name": "hua minh quan",
+      "wishlist": "quà gì cũng nhận",
+      "passcode": "828289",
+      "fb": "https://www.facebook.com/quannguyen33063/",
+      "questions": "no sir"
+    },
+    {
+      "name": "ad",
+      "wishlist": "- Bút chì kim\n- Thêm 300 ngày ở LHP\n- Ghế Pres SC 2728",
+      "passcode": "512435",
+      "fb": "facebook.com/andoandf/",
+      "questions": "Khi nào ad mới trả hết nghiệp để có ny :("
+    },
+    {
+      "name": "Có tiền sẽ tham gia.",
+      "wishlist": "Suck my sack\nLick my butthole\nLốc xoáy kiểu pháp",
+      "passcode": "858942",
+      "fb": "https://xhamster.desi/",
+      "questions": "moni where?"
+    },
+    {
+      "name": "I Love New York City (ILOVENYC)",
+      "wishlist": "Gấu bông, cái gì cũng được🕺, vé gặp New York city",
+      "passcode": "817236",
+      "fb": "Wulin",
+      "questions": ""
+    }
+  ],
+  "organizerPasscode": "512435",
+  "forced": [],
+  "excl": [],
+  "loop": true,
+  "drawn": true,
+  "matches": {
+    "I Love New York City (ILOVENYC)": "LMK",
+    "LMK": "Có tiền sẽ tham gia.",
+    "Có tiền sẽ tham gia.": "Timi",
+    "Timi": "ad",
+    "ad": "hariwon",
+    "hariwon": "hua minh quan",
+    "hua minh quan": "I Love New York City (ILOVENYC)"
+  },
+  "drawnAt": 1794964134378,
+  "fallback": false
+}

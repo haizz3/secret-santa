@@ -3,117 +3,204 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Secret Santa Generator</title>
+<title>Secret Santa 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#fbf6ee; --card:#ffffff; --ink:#1f2a24; --muted:#6b736d; --line:#e9e1d3;
+    --bg:#fbf6ee; --card:#ffffff; --ink:#1f2a24; --muted:#5f6c62; --line:#e8dfd1;
     --red:#b3261e; --red-d:#8f1d17; --green:#1e5b3a; --green-l:#e7f1ea; --gold:#c99a2e; --gold-l:#fbf1d9;
-    --radius:16px;
+    --radius:18px;
   }
   *{box-sizing:border-box}
-  html,body{margin:0}
-  body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;
-    background-image:radial-gradient(circle at 10% 0%,#f3e7d3 0,transparent 40%),radial-gradient(circle at 100% 20%,#eef3ea 0,transparent 35%);min-height:100vh}
-  .wrap{max-width:760px;margin:0 auto;padding:28px 18px 80px}
+  html,body{margin:0;padding:0;min-height:100vh}
+  body{
+    font-family:Inter,system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;
+    background-image:
+      radial-gradient(circle at 10% 15%,#f6ebd8 0%,transparent 45%),
+      radial-gradient(circle at 90% 85%,#eaf3e7 0%,transparent 45%),
+      radial-gradient(circle at 50% 50%,#fefcf9 0%,#f8f1e4 100%);
+    display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px 20px;
+    position:relative;overflow-x:hidden;
+  }
+  .wrap{width:100%;max-width:1160px;margin:auto;position:relative;z-index:2}
   h1,h2,h3{font-family:Fraunces,Georgia,serif;margin:0}
-  header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
-  .orn{width:58px;height:58px;flex:none;cursor:default;user-select:none;-webkit-tap-highlight-color:transparent}
-  header h1{font-size:clamp(26px,5vw,36px);font-weight:800;color:var(--green);line-height:1.1}
+  
+  header{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:14px}
+  .orn{width:56px;height:56px;flex:none}
+  header h1{font-size:clamp(26px,4vw,36px);font-weight:800;color:var(--green);line-height:1.1}
   header .sub{color:var(--muted);font-size:14px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:0 1px 0 rgba(0,0,0,.02),0 8px 24px -18px rgba(60,40,10,.25)}
-  .card h2{font-size:20px;margin-bottom:4px;display:flex;align-items:center;gap:10px}
-  .step{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--red);color:#fff;font:700 13px Inter,sans-serif}
-  .hint{color:var(--muted);font-size:14px;margin:4px 0 12px}
-  .event-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px}
-  .ev{background:var(--gold-l);border-radius:12px;padding:10px 12px}
-  .ev .k{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#8a6a1c;font-weight:700}
-  .ev .v{font-weight:600}
+  .badge-tag{
+    display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);
+    border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;color:var(--green);
+    box-shadow:0 2px 6px rgba(0,0,0,.03);
+  }
+
+  .main-grid{
+    display:grid;grid-template-columns:1.06fr 0.94fr;gap:22px;align-items:stretch;
+  }
+  @media (max-width:880px){
+    .main-grid{grid-template-columns:1fr;gap:18px}
+    body{justify-content:flex-start;padding:16px 14px 32px}
+  }
+
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;
+    box-shadow:0 1px 0 rgba(0,0,0,.02),0 12px 32px -18px rgba(60,40,10,.22);
+  }
+  .card h2{font-size:20px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .hint{color:var(--muted);font-size:14px;margin:4px 0 14px}
+
+  .portal-card{
+    border:2px solid #bcd8c6;background:linear-gradient(180deg,#fdfffd 0%,#ffffff 100%);
+    display:flex;flex-direction:column;justify-content:space-between;height:100%;
+  }
+
+  .event-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .ev{background:var(--gold-l);border-radius:14px;padding:12px 14px}
+  .ev .k{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#8a6a1c;font-weight:700}
+  .ev .v{font-weight:600;font-size:14.5px;margin-top:3px}
   .ev.wide{grid-column:1/-1}
-  textarea,input,select{font:inherit;color:inherit;width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fffdf9}
-  textarea{min-height:170px;resize:vertical}
+
+  textarea,input,select{font:inherit;color:inherit;width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fffdf9}
+  textarea{min-height:90px;resize:vertical}
   textarea:focus,input:focus,select:focus{outline:2px solid #bcd8c6;border-color:var(--green)}
-  label{font-size:13px;font-weight:600;display:block;margin:10px 0 4px}
+  label{font-size:13.5px;font-weight:600;display:block;margin:12px 0 5px}
   .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .btn{font:600 15px Inter,sans-serif;border:0;border-radius:999px;padding:11px 18px;cursor:pointer;background:var(--green);color:#fff;transition:transform .05s,background .15s}
+
+  .btn{
+    font:600 15px Inter,sans-serif;border:0;border-radius:999px;padding:11px 20px;cursor:pointer;
+    background:var(--green);color:#fff;transition:transform .05s,background .15s;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  }
   .btn:active{transform:translateY(1px)}
   .btn.red{background:var(--red)} .btn.red:hover{background:var(--red-d)}
   .btn.ghost{background:transparent;color:var(--green);border:1.5px solid var(--green)}
-  .btn.small{padding:7px 12px;font-size:13px}
-  .btn.link{background:none;color:var(--muted);padding:6px 8px;text-decoration:underline}
-  .btn:disabled{opacity:.45;cursor:not-allowed}
-  .big{font-size:17px;padding:14px 26px}
+  .btn.small{padding:6px 14px;font-size:13px}
+  .btn.link{background:none;color:var(--muted);padding:4px 8px;text-decoration:underline}
+  .btn.big{font-size:16px;padding:14px 24px;width:100%;margin-top:8px}
+
   .status{margin-top:12px;padding:12px 14px;border-radius:12px;font-size:14px}
   .status.ok{background:var(--green-l);color:var(--green)}
   .status.warn{background:#fdecea;color:var(--red-d)}
   .status.info{background:var(--gold-l);color:#6d5313}
-  .tabs{display:flex;gap:6px;background:#f3ede2;padding:4px;border-radius:999px;width:fit-content;margin-bottom:14px}
-  .tab{border:0;background:none;font:600 14px Inter,sans-serif;padding:8px 14px;border-radius:999px;cursor:pointer;color:var(--muted)}
-  .tab.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.1)}
-  .names{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
-  .name-btn{border:1.5px solid var(--line);background:#fffdf9;border-radius:12px;padding:12px;font:600 15px Inter,sans-serif;cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:6px}
-  .name-btn:hover{border-color:var(--green)}
-  .name-btn.seen{background:var(--green-l);border-color:#bcd8c6;color:var(--green)}
-  .code-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
-  .code-row:last-child{border-bottom:0}
-  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--muted);word-break:break-all}
-  .pill{font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--gold-l);color:#8a6a1c}
-  .have-code{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--green);color:#fff;border-radius:var(--radius);padding:16px 20px;margin-bottom:16px}
-  .have-code b{font-family:Fraunces,serif;font-size:18px}
-  .have-code .btn{background:#fff;color:var(--green)}
+
+  .pill{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--gold-l);color:#8a6a1c}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .chip{background:#f4ede3;border-radius:999px;padding:7px 14px;font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:5px}
+  .chip.me{background:var(--green-l);color:var(--green);border:1px solid #bcd8c6}
+
+  .rules-tip{
+    margin-top:20px;background:#faf6ee;border:1px dashed var(--gold);border-radius:14px;padding:16px 18px;
+  }
+  .tip-title{
+    font-family:Fraunces,Georgia,serif;font-size:15px;font-weight:700;color:#835f11;margin-bottom:8px;display:flex;align-items:center;gap:6px;
+  }
+  .tip-list{margin:0;padding-left:18px;font-size:13.5px;color:var(--muted);line-height:1.6}
+  .tip-list li{margin-bottom:4px}
+  .tip-list li:last-child{margin-bottom:0}
+  .tip-list b{color:var(--ink)}
+
+  .reveal-box{
+    text-align:center;background:var(--gold-l);border-radius:16px;padding:24px 20px;margin-top:16px;
+    border:1.5px dashed var(--gold);
+  }
+  .reveal-box .to{
+    font-family:Fraunces,serif;font-size:clamp(32px,5vw,46px);font-weight:800;color:var(--red);line-height:1.15;margin:10px 0 14px;
+  }
+  .wish-box{
+    background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 18px;margin:12px auto;max-width:480px;text-align:left;
+    line-height:1.6;font-size:14.5px;box-shadow:0 3px 12px rgba(60,40,10,.05);
+  }
+  .wish-box b{color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+
   /* modal */
   .overlay{position:fixed;inset:0;background:rgba(20,28,24,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:50;backdrop-filter:blur(3px)}
   .overlay.open{display:flex}
-  .modal{background:#fff;border-radius:20px;max-width:560px;width:100%;max-height:90vh;overflow:auto;padding:22px;position:relative}
-  .modal h3{font-size:22px;margin-bottom:6px}
-  .x{position:absolute;top:10px;right:12px;border:0;background:none;font-size:24px;cursor:pointer;color:var(--muted)}
-  .reveal{text-align:center;padding:10px 0}
-  .reveal .to{font-family:Fraunces,serif;font-size:clamp(34px,8vw,52px);font-weight:800;color:var(--red);line-height:1.1;margin:8px 0 12px}
-  .wish{background:var(--gold-l);border-radius:12px;padding:10px 14px;margin:10px auto;max-width:420px;text-align:left}
-  /* organizer */
+  .modal{background:#fff;border-radius:20px;max-width:540px;width:100%;max-height:90vh;overflow:auto;padding:24px;position:relative}
+  .modal h3{font-size:21px;margin-bottom:6px}
+  .x{position:absolute;top:12px;right:14px;border:0;background:none;font-size:24px;cursor:pointer;color:var(--muted)}
+
+  /* organizer modal styles */
   .org h4{font-family:Fraunces,serif;font-size:16px;margin:18px 0 6px}
   .rule{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#faf7f1;border-radius:10px;margin-bottom:6px;font-size:14px}
   .rule .del{border:0;background:none;color:var(--red);font-size:18px;cursor:pointer}
   .grid3{display:grid;grid-template-columns:1fr auto 1fr auto;gap:6px;align-items:center}
-  .grid3 span{color:var(--muted);font-size:14px}
+  .grid3 span{color:var(--muted);font-size:13px}
   table{width:100%;border-collapse:collapse;font-size:14px}
-  td{padding:7px 6px;border-bottom:1px solid var(--line)}
+  td{padding:8px 6px;border-bottom:1px solid var(--line)}
   td.arrow{color:var(--muted);width:30px;text-align:center}
-  .chk{display:flex;align-items:center;gap:8px;font-size:14px;margin:8px 0}
-  .chk input{width:auto}
-  .foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
-  .snow{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-  .wrap{position:relative;z-index:1}
-  @media (max-width:520px){.grid3{grid-template-columns:1fr 1fr}.grid3 span{display:none}.have-code{flex-direction:column;align-items:flex-start}}
-  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-  .chip{background:#f3ede2;border-radius:999px;padding:5px 12px;font-size:14px;font-weight:600}
-  .chip.me{background:var(--green-l);color:var(--green)}
-  .prow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--line);font-size:15px}
-  .prow:last-child{border-bottom:0}
-  .prow .acts{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
-  .icon{border:0;background:#f3ede2;border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:15px}
-  .icon.del{color:var(--red)}
-  .reveal-btn{width:100%;font-size:18px;padding:18px}
+
+  .foot{text-align:center;color:var(--muted);font-size:13px;margin-top:22px}
+  .snow-canvas{position:fixed;inset:0;pointer-events:none;z-index:1}
 </style>
 </head>
 <body>
+<canvas class="snow-canvas" id="snowCanvas"></canvas>
+
 <div class="wrap">
   <header>
-    <svg class="orn" id="orn" viewBox="0 0 64 64" aria-hidden="true">
-      <rect x="27" y="4" width="10" height="8" rx="2" fill="#c99a2e"/>
-      <circle cx="32" cy="38" r="24" fill="#b3261e"/>
-      <path d="M10 32 Q32 24 54 32 L54 38 Q32 30 10 38Z" fill="#fbf1d9" opacity=".9"/>
-      <circle cx="22" cy="46" r="3" fill="#fbf1d9"/><circle cx="32" cy="49" r="3" fill="#fbf1d9"/><circle cx="42" cy="46" r="3" fill="#fbf1d9"/>
-      <circle cx="24" cy="28" r="5" fill="#fff" opacity=".25"/>
-    </svg>
-    <div>
-      <h1 id="evTitle">Secret Santa</h1>
-      <div class="sub" id="sub">Gift exchange name draw</div>
+    <div class="brand">
+      <svg class="orn" viewBox="0 0 64 64" aria-hidden="true">
+        <rect x="27" y="4" width="10" height="8" rx="2" fill="#c99a2e"/>
+        <circle cx="32" cy="38" r="24" fill="#b3261e"/>
+        <path d="M10 32 Q32 24 54 32 L54 38 Q32 30 10 38Z" fill="#fbf1d9" opacity=".9"/>
+        <circle cx="22" cy="46" r="3" fill="#fbf1d9"/><circle cx="32" cy="49" r="3" fill="#fbf1d9"/><circle cx="42" cy="46" r="3" fill="#fbf1d9"/>
+        <circle cx="24" cy="28" r="5" fill="#fff" opacity=".25"/>
+      </svg>
+      <div>
+        <h1 id="evTitle">Secret Santa</h1>
+        <div class="sub" id="sub">Gift exchange match portal</div>
+      </div>
+    </div>
+    <div class="badge-tag">
+      <span>🎄 19 Dec 2026</span> · <span>💸 200k VND</span>
     </div>
   </header>
-  <div id="app"><div class="card"><p class="hint" style="margin:0">Loading…</p></div></div>
-  <div class="foot" id="foot">Made with 🎁</div>
+
+  <div class="main-grid">
+    <!-- LEFT: LOGIN & MATCH REVEAL -->
+    <div style="height:100%">
+      <section class="card portal-card" id="loginCard">
+        <div>
+          <h2>🎁 Find Your Match</h2>
+          <div id="authContent"></div>
+        </div>
+
+        <div id="portalFooter">
+          <div class="rules-tip">
+            <div class="tip-title">✨ How Secret Santa Works</div>
+            <ul class="tip-list">
+              <li>🤫 <b>Strictly Confidential:</b> Keep your match secret until the gift opening!</li>
+              <li>🎁 <b>Check Their Wishlist:</b> Give them something from their requested 3 gifts.</li>
+              <li>💸 <b>Budget Limit:</b> Keep gifts around the ~200,000 VND limit.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- RIGHT: EVENT DETAILS & PARTICIPANTS -->
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <section class="card">
+        <h2>🎄 Event Details</h2>
+        <div id="eventGrid" class="event-grid"></div>
+      </section>
+
+      <section class="card" style="flex:1">
+        <div class="row" style="justify-content:space-between">
+          <h2>🧑‍🤝‍🧑 Participants</h2>
+          <span class="pill" id="partCount">7 people</span>
+        </div>
+        <p class="hint" style="margin:4px 0 10px">Everyone has a secret recipient in the gift loop:</p>
+        <div class="chips" id="partChips"></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="foot">Secret Santa 2026 · Shhh... keep your match a secret until the party! 🎁</div>
 </div>
 
 <div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
@@ -122,9 +209,6 @@
 (function(){
 "use strict";
 
-/* =====================================================================
-   Placeholders: edit them on the page (organizer) or change them here.
-   ===================================================================== */
 const DEFAULT_EVENT = {
   title: "Secret Santa 2026",
   date: "Saturday, 19 December 2026",
@@ -133,670 +217,554 @@ const DEFAULT_EVENT = {
   budget: "200,000 VND",
   note: "Wrap it, label it with the receiver's name, and keep it a secret until the party!"
 };
-const SAMPLE = "Alex\nBảo - coffee beans, notebooks\nChi\nĐức - board games\nEmma\nHana - plants\nKhoa\nLinh - books, green tea";
-const LKEY = "secret-santa-2026-v1";      // offline mode data (this browser only)
-const OKEY = "secret-santa-2026-owner";   // organizer's private rules in shared mode (this browser only)
 
-const app = document.getElementById("app");
+const DEFAULT_PARTICIPANTS = [
+  {
+    name: "hariwon",
+    wishlist: "ghế pres SC 26-27\nmóc khóa/lanyard\nbánh kẹo\n\nVUI LÀ CHÍNH",
+    passcode: "172347",
+    fb: "https://www.facebook.com/hung.chan.vu.2025"
+  },
+  {
+    name: "Timi",
+    wishlist: "Cổ phiếu nvidia, VF3, Sony FX 30",
+    passcode: "658242",
+    fb: "https://www.facebook.com/share/1CKNRfPHKD/"
+  },
+  {
+    name: "LMK",
+    wishlist: "C106, đồ handmade, xe mô hình",
+    passcode: "657438",
+    fb: "https://www.facebook.com/share/1GGtdMkzQN/?mibextid=wwXIfr"
+  },
+  {
+    name: "hua minh quan",
+    wishlist: "quà gì cũng nhận",
+    passcode: "828289",
+    fb: "https://www.facebook.com/quannguyen33063/"
+  },
+  {
+    name: "ad",
+    wishlist: "- Bút chì kim\n- Thêm 300 ngày ở LHP\n- Ghế Pres SC 2728",
+    passcode: "512435",
+    fb: "facebook.com/andoandf/"
+  },
+  {
+    name: "Có tiền sẽ tham gia.",
+    wishlist: "Suck my sack\nLick my butthole\nLốc xoáy kiểu pháp",
+    passcode: "858942",
+    fb: "https://xhamster.desi/"
+  },
+  {
+    name: "I Love New York City (ILOVENYC)",
+    wishlist: "Gấu bông, cái gì cũng được🕺, vé gặp New York city",
+    passcode: "817236",
+    fb: "Wulin"
+  }
+];
+
+const AUTH_KEY = "secret-santa-auth-session";
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function load(k, d){ try { const v = JSON.parse(localStorage.getItem(k)); return v ? Object.assign(d, v) : d; } catch(e){ return d; } }
-function store(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
 
-/* ---------------- draw engine ---------------- */
-function shuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
-function solve(list, forcedPairs, exclPairs, loop, nameOf){
-  nameOf = nameOf || (x => x);
-  const n = list.length, set = new Set(list);
-  if (n < 3) return {ok:false, hard:true, reason:"You need at least 3 people for a Secret Santa."};
-  const forced = new Map(), targets = new Map();
-  for (const [g, r] of forcedPairs){
-    if (!set.has(g) || !set.has(r)) continue;
-    if (g === r) return {ok:false, hard:true, reason:`${nameOf(g)} can't be forced to draw themselves.`};
-    if (forced.has(g) && forced.get(g) !== r) return {ok:false, hard:true, reason:`${nameOf(g)} is forced to two different people.`};
-    if (targets.has(r) && targets.get(r) !== g) return {ok:false, hard:true, reason:`${nameOf(r)} is the forced match for both ${nameOf(targets.get(r))} and ${nameOf(g)}.`};
-    forced.set(g, r); targets.set(r, g);
-  }
-  const ex = new Set(exclPairs.filter(([a, b]) => set.has(a) && set.has(b)).map(([a, b]) => a + "\u0000" + b));
-  for (const [g, r] of forced) if (ex.has(g + "\u0000" + r)) return {ok:false, hard:true, reason:`${nameOf(g)} → ${nameOf(r)} is both forced and blocked.`};
-  const allowed = (g, r) => g !== r && !ex.has(g + "\u0000" + r) && (forced.has(g) ? forced.get(g) === r : !targets.has(r));
-  let steps = 0, budgetHit = false; const BUDGET = 250000;
-  if (loop){
-    const start = list[Math.floor(Math.random() * n)];
-    const path = [start], used = new Set([start]);
-    const dfs = cur => {
-      if (++steps > BUDGET){ budgetHit = true; return false; }
-      if (path.length === n) return allowed(cur, start);
-      for (const r of shuffle(list.filter(x => !used.has(x) && allowed(cur, x)))){
-        used.add(r); path.push(r);
-        if (dfs(r)) return true;
-        path.pop(); used.delete(r);
-        if (budgetHit) return false;
-      }
-      return false;
-    };
-    if (dfs(start)){ const map = {}; path.forEach((g, i) => map[g] = path[(i + 1) % n]); return {ok:true, map}; }
-    return {ok:false, reason:"No single loop fits these rules."};
-  }
-  const givers = shuffle(list).sort((a, b) => list.filter(r => allowed(a, r)).length - list.filter(r => allowed(b, r)).length);
-  const map = {}, used = new Set();
-  const bt = i => {
-    if (++steps > BUDGET){ budgetHit = true; return false; }
-    if (i === givers.length) return true;
-    const g = givers[i];
-    for (const r of shuffle(list.filter(x => !used.has(x) && allowed(g, x)))){
-      map[g] = r; used.add(r);
-      if (bt(i + 1)) return true;
-      used.delete(r); delete map[g];
-      if (budgetHit) return false;
-    }
-    return false;
-  };
-  if (bt(0)) return {ok:true, map};
-  return {ok:false, reason:"These rules make a valid draw impossible. Remove a forced pair or an exclusion."};
-}
-function attempt(list, forced, excl, loop, nameOf){
-  let r = solve(list, forced, excl, loop, nameOf), fallback = false;
-  if (!r.ok && loop && !r.hard){ const r2 = solve(list, forced, excl, false, nameOf); if (r2.ok){ r = r2; fallback = true; } else r = r2; }
-  r.fallback = fallback; return r;
-}
-
-/* ---------------- private codes (scrambled, not encrypted) ---------------- */
-const B32 = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
-function prng(seed){ return function(){ seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
-function encodeCode(g, r, w){
-  const data = new TextEncoder().encode([g, r, (w || "").slice(0, 60)].join("\u0001"));
-  const salt = Math.floor(Math.random() * 256), rnd = prng(salt * 7919 + 2026);
-  let sum = 0; const out = [salt];
-  for (const b of data){ sum = (sum + b) & 255; out.push(b ^ Math.floor(rnd() * 256)); }
-  out.push(sum ^ Math.floor(rnd() * 256));
-  let bits = 0, val = 0, s = "";
-  for (const b of out){ val = ((val << 8) | b) & 0xffff; bits += 8; while (bits >= 5){ s += B32[(val >>> (bits - 5)) & 31]; bits -= 5; } }
-  if (bits > 0) s += B32[(val << (5 - bits)) & 31];
-  return s.match(/.{1,4}/g).join("-");
-}
-function decodeCode(code){
-  const clean = String(code).toUpperCase().replace(/O/g, "0").replace(/[IL]/g, "1").replace(/[^0-9A-Z]/g, "");
-  let bits = 0, val = 0; const bytes = [];
-  for (const c of clean){ const i = B32.indexOf(c); if (i < 0) return null; val = ((val << 5) | i) & 0xffff; bits += 5; if (bits >= 8){ bytes.push((val >>> (bits - 8)) & 255); bits -= 8; } }
-  if (bytes.length < 4) return null;
-  const salt = bytes[0], rnd = prng(salt * 7919 + 2026), data = [];
-  let sum = 0;
-  for (let i = 1; i < bytes.length - 1; i++){ const b = bytes[i] ^ Math.floor(rnd() * 256); data.push(b); sum = (sum + b) & 255; }
-  if (((bytes[bytes.length - 1] ^ Math.floor(rnd() * 256)) & 255) !== sum) return null;
-  try { const p = new TextDecoder("utf-8", {fatal:true}).decode(new Uint8Array(data)).split("\u0001"); if (p.length < 2) return null; return {g:p[0], r:p[1], w:p[2] || ""}; } catch(e){ return null; }
-}
-function codeMessage(g, code, ev, link){
-  return `Hi ${g}! 🎅\nYour Secret Santa code for "${ev.title}":\n\n${code}\n\nOpen ${link || "the Secret Santa page"}, tap "I have a code" and paste it in. Keep it secret! 🤫\n📅 ${ev.date}, ${ev.time}\n📍 ${ev.place}\n💸 Budget: ${ev.budget}`;
-}
-
-/* ---------------- shared UI helpers ---------------- */
 function openModal(html){ $("modal").innerHTML = '<button class="x" data-close>&times;</button>' + html; $("overlay").classList.add("open"); }
 function closeModal(){ $("overlay").classList.remove("open"); $("modal").innerHTML = ""; }
 $("overlay").addEventListener("click", e => { if (e.target.id === "overlay" || e.target.hasAttribute("data-close")) closeModal(); });
-function focusSoon(id){ setTimeout(() => { const el = $(id); if (el) el.focus(); }, 50); }
 function copyText(text, btn){
   const done = () => { if (btn){ const o = btn.textContent; btn.textContent = "Copied ✓"; setTimeout(() => btn.textContent = o, 1400); } };
-  const manual = () => openModal(`<h3>Copy this</h3><p class="hint">Your browser blocked automatic copying. Select the text and copy it.</p><textarea readonly style="min-height:160px">${esc(text)}</textarea>`);
-  try { navigator.clipboard.writeText(text).then(done, manual); } catch(e){ manual(); }
-}
-function revealHTML(g, r, w, ev){
-  return `<div class="reveal">
-    <div class="hint" style="margin:0">🎅 ${esc(g)}, you're the Secret Santa for</div>
-    <div class="to">${esc(r)}</div>
-    ${w ? `<div class="wish"><b>Their wishlist:</b> ${esc(w)}</div>` : `<div class="hint">No wishlist yet. Time to get creative!</div>`}
-    ${ev ? `<div class="hint">Budget: <b>${esc(ev.budget)}</b> · ${esc(ev.date)}</div>` : ""}
-  </div>`;
-}
-function eventCardHTML(ev, editable){
-  $("evTitle").textContent = ev.title || "Secret Santa";
-  document.title = (ev.title || "Secret Santa") + " · Name Draw";
-  const items = [["📅 Date", ev.date], ["⏰ Time", ev.time], ["💸 Budget", ev.budget], ["📍 Place", ev.place, "wide"], ["📝 Note", ev.note, "wide"]].filter(x => x[1]);
-  return `<section class="card"><div class="row" style="justify-content:space-between"><h2>🎄 The event</h2>${editable ? '<button class="btn small ghost" id="editEvent">Edit details</button>' : ""}</div>
-    <div class="event-grid">${items.map(([k, v, c]) => `<div class="ev ${c || ""}"><div class="k">${k}</div><div class="v">${esc(v)}</div></div>`).join("")}</div></section>`;
-}
-function openEventEditor(ev, onSave){
-  const f = (k, l) => `<label>${l}</label><input data-k="${k}" value="${esc(ev[k] || "")}">`;
-  openModal(`<h3>Event details</h3>${f("title","Event name")}${f("date","Date")}${f("time","Time")}${f("place","Place")}${f("budget","Budget")}
-    <label>Note</label><textarea data-k="note" style="min-height:80px">${esc(ev.note || "")}</textarea>
-    <div class="row" style="margin-top:14px"><button class="btn" id="saveEv">Save</button><button class="btn link" id="resetEv">Reset to defaults</button></div>`);
-  $("saveEv").onclick = () => { const out = {}; document.querySelectorAll("#modal [data-k]").forEach(i => out[i.dataset.k] = i.value.trim()); closeModal(); onSave(out); };
-  $("resetEv").onclick = () => { closeModal(); onSave(Object.assign({}, DEFAULT_EVENT)); };
-}
-function openCodeEntry(){
-  openModal(`<h3>Enter your code</h3><p class="hint">Paste the code you received. Dashes and spaces don't matter.</p>
-    <input id="codeIn" placeholder="XXXX-XXXX-XXXX-…" autocomplete="off">
-    <div id="codeErr"></div><div class="row" style="margin-top:12px"><button class="btn red" id="codeGo">Reveal my match</button></div>`);
-  const go = () => {
-    const d = decodeCode($("codeIn").value);
-    if (!d){ $("codeErr").innerHTML = `<div class="status warn">That code doesn't look right. Check that you copied all of it.</div>`; return; }
-    openModal(revealHTML(d.g, d.r, d.w, null) + `<div class="row" style="justify-content:center"><button class="btn" data-close>Got it, hide this</button></div>`);
-  };
-  $("codeGo").onclick = go;
-  $("codeIn").addEventListener("keydown", e => { if (e.key === "Enter") go(); });
-  focusSoon("codeIn");
-}
-const CODE_BANNER = `<div class="have-code"><div><b>Got a Secret Santa code?</b><br><span style="opacity:.85;font-size:14px">Paste it here to see who you're buying for.</span></div><button class="btn" id="haveCodeBtn">I have a code</button></div>`;
-function askPass(pass, then){
-  if (!pass) return then();
-  openModal(`<h3>🔒</h3><input id="pw" type="password" placeholder="Passcode" autocomplete="off"><div id="pwErr"></div>
-    <div class="row" style="margin-top:12px"><button class="btn" id="pwGo">Open</button></div>`);
-  const go = () => { if ($("pw").value === pass) then(); else $("pwErr").innerHTML = `<div class="status warn">Wrong passcode.</div>`; };
-  $("pwGo").onclick = go; $("pw").addEventListener("keydown", e => { if (e.key === "Enter") go(); });
-  focusSoon("pw");
-}
-function rulesHTML(ids, nameOf, forced, excl, loop){
-  const opts = ph => `<option value="">${ph}</option>` + ids.map(id => `<option value="${esc(id)}">${esc(nameOf(id))}</option>`).join("");
-  const live = r => ids.includes(r[0]) && ids.includes(r[1]);
-  const gone = ' <span class="pill">not in list</span>';
-  return `<h4>Forced pairs: giver → must get</h4>
-    ${forced.map((f, i) => `<div class="rule"><span>${esc(nameOf(f[0]))} → <b>${esc(nameOf(f[1]))}</b>${live(f) ? "" : gone}</span><button class="del" data-df="${i}">×</button></div>`).join("") || '<p class="hint">None yet.</p>'}
-    <div class="grid3"><select id="fG">${opts("Giver…")}</select><span>gives to</span><select id="fR">${opts("Receiver…")}</select><button class="btn small" id="fAdd">Add</button></div>
-    <h4>Exclusions: never pair these</h4>
-    ${excl.map((x, i) => `<div class="rule"><span>${esc(nameOf(x[0]))} ✕ ${esc(nameOf(x[1]))}${live(x) ? "" : gone}</span><button class="del" data-dx="${i}">×</button></div>`).join("") || '<p class="hint">None yet.</p>'}
-    <div class="grid3"><select id="xA">${opts("Person…")}</select><span>can't draw</span><select id="xB">${opts("Person…")}</select><button class="btn small" id="xAdd">Add</button></div>
-    <label class="chk"><input type="checkbox" id="xBoth" checked> Both ways (good for couples)</label>
-    <h4>Options</h4>
-    <label class="chk"><input type="checkbox" id="loop" ${loop ? "checked" : ""}> One big loop (A→B→C→…→A, no small closed pairs)</label>`;
-}
-/* wires the rule controls; R = {forced, excl, loop}; after(msg) re-opens the panel */
-function wireRules(R, save, after){
-  document.querySelectorAll("[data-df]").forEach(b => b.onclick = () => { R.forced.splice(+b.dataset.df, 1); save(); after(); });
-  document.querySelectorAll("[data-dx]").forEach(b => b.onclick = () => { R.excl.splice(+b.dataset.dx, 1); save(); after(); });
-  $("fAdd").onclick = () => {
-    const g = $("fG").value, t = $("fR").value;
-    if (!g || !t) return after(["warn", "Pick both a giver and a receiver."]);
-    if (g === t) return after(["warn", "Someone can't give to themselves."]);
-    R.forced = R.forced.filter(f => f[0] !== g && f[1] !== t); R.forced.push([g, t]);
-    save(); after(["ok", "Forced pair added."]);
-  };
-  $("xAdd").onclick = () => {
-    const a = $("xA").value, b = $("xB").value;
-    if (!a || !b || a === b) return after(["warn", "Pick two different people."]);
-    const add = (p, q) => { if (!R.excl.some(x => x[0] === p && x[1] === q)) R.excl.push([p, q]); };
-    add(a, b); if ($("xBoth").checked) add(b, a);
-    save(); after(["ok", "Exclusion added."]);
-  };
-  $("loop").onchange = e => { R.loop = e.target.checked; save(); };
-}
-function passHTML(pass){
-  return `<h4>Passcode for this panel</h4>
-    <div class="row"><input id="newPw" type="password" placeholder="${pass ? "Change passcode" : "Set a passcode (optional)"}" style="flex:1;min-width:160px"><button class="btn small ghost" id="savePw">Save</button>${pass ? '<button class="btn link" id="clearPw">Remove</button>' : ""}</div>
-    <p class="hint" style="margin-top:6px">Open this panel: tap the ornament 3 times quickly, or press Shift+O.</p>`;
-}
-function wirePass(R, save, after){
-  $("savePw").onclick = () => { const v = $("newPw").value; if (!v) return; R.pass = v; save(); after(["ok", "Passcode saved."]); };
-  if ($("clearPw")) $("clearPw").onclick = () => { R.pass = ""; save(); after(["ok", "Passcode removed."]); };
+  try { navigator.clipboard.writeText(text).then(done); } catch(e){}
 }
 
-/* hidden organizer trigger: tap the ornament 3 times, or Shift+O */
-let onSecret = null, taps = [];
-$("orn").addEventListener("click", () => {
-  const now = Date.now(); taps = taps.filter(t => now - t < 1200); taps.push(now);
-  if (taps.length >= 3){ taps = []; if (onSecret) onSecret(); }
-});
-document.addEventListener("keydown", e => {
-  if (e.shiftKey && (e.key === "O" || e.key === "o") && !/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || "") && onSecret) onSecret();
-});
+// Gentle falling snow on canvas
+(function initSnow(){
+  const canvas = $("snowCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  let width, height;
+  const flakes = [];
 
-/* =====================================================================
-   OFFLINE MODE: no sign-in. Everything stays in this browser.
-   Used on GitHub Pages, or when shared storage isn't available.
-   ===================================================================== */
-function startLocal(){
-  const S = load(LKEY, {event:null, raw:"", forced:[], excl:[], loop:true, pass:"", link:"", result:null, seen:{}});
-  S.event = Object.assign({}, DEFAULT_EVENT, S.event || {});
-  const save = () => store(LKEY, S);
-  $("foot").textContent = "Made with 🎁 · Offline mode: names and results are saved only in this browser";
+  function resize(){
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  }
+  window.addEventListener("resize", resize);
+  resize();
 
-  app.innerHTML = `${CODE_BANNER}<div id="evWrap"></div>
-  <section class="card">
-    <h2><span class="step">1</span> Who's joining?</h2>
-    <p class="hint">One person per line. Optional wishlist after a dash, like <i>Linh - books, green tea</i></p>
-    <textarea id="names" placeholder="Alex&#10;Bảo - coffee stuff&#10;Chi&#10;..."></textarea>
-    <div class="row" style="justify-content:space-between;margin-top:8px">
-      <span class="hint" id="count" style="margin:0">0 people</span>
-      <button class="btn link" id="sample">Load sample names</button>
-    </div>
-    <div id="nameWarn"></div>
-  </section>
-  <section class="card">
-    <h2><span class="step">2</span> Draw names</h2>
-    <p class="hint">Everyone gets one person to buy for. Nobody draws themselves, and the results stay hidden.</p>
-    <div class="row"><button class="btn red big" id="drawBtn">🎲 Draw names</button></div>
-    <div id="drawStatus"></div>
-  </section>
-  <section class="card">
-    <h2><span class="step">3</span> Reveal</h2>
-    <p class="hint">Choose how each person finds out who they're buying for.</p>
-    <div class="tabs"><button class="tab on" data-mode="phone">📱 Pass the phone</button><button class="tab" data-mode="codes">✉️ Send private codes</button></div>
-    <div id="revealBody"></div>
-  </section>`;
-
-  function parse(){
-    const people = [], seen = new Set(), dupes = [];
-    S.raw.split(/\n/).forEach(line => {
-      line = line.trim(); if (!line) return;
-      let name = line, wish = "";
-      const m = line.match(/^(.+?)\s+[-–—]\s+(.*)$/);
-      if (m){ name = m[1].trim(); wish = m[2].trim(); }
-      const k = name.toLowerCase();
-      if (seen.has(k)){ dupes.push(name); return; }
-      seen.add(k); people.push({name, wish});
+  for (let i = 0; i < 40; i++){
+    flakes.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 2.5 + 1,
+      vy: Math.random() * 0.8 + 0.3,
+      vx: Math.random() * 0.4 - 0.2,
+      o: Math.random() * 0.35 + 0.1
     });
-    return {people, dupes};
   }
-  const names = () => parse().people.map(p => p.name);
-  const wishOf = n => (parse().people.find(p => p.name === n) || {}).wish || "";
-  function signature(){
-    const ns = names().slice().sort();
-    const live = r => ns.includes(r[0]) && ns.includes(r[1]);
-    return JSON.stringify([ns, S.forced.filter(live), S.excl.filter(live), S.loop]);
-  }
-  const fresh = () => S.result && S.result.sig === signature();
 
-  function renderEvent(){
-    $("evWrap").innerHTML = eventCardHTML(S.event, true);
-    $("editEvent").onclick = () => openEventEditor(S.event, ev => { S.event = ev; save(); renderAll(); });
+  function loop(){
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = "#c99a2e";
+    flakes.forEach(f => {
+      ctx.beginPath();
+      ctx.globalAlpha = f.o;
+      ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+      ctx.fill();
+      f.y += f.vy;
+      f.x += f.vx;
+      if (f.y > height) { f.y = -5; f.x = Math.random() * width; }
+      if (f.x > width) f.x = 0;
+      if (f.x < 0) f.x = width;
+    });
+    requestAnimationFrame(loop);
   }
-  function renderNames(){
-    const {people, dupes} = parse();
-    $("count").textContent = people.length + (people.length === 1 ? " person" : " people");
-    $("nameWarn").innerHTML = dupes.length ? `<div class="status warn">Duplicate name skipped: ${dupes.map(esc).join(", ")}. Add a last initial to tell them apart.</div>` : "";
+  loop();
+})();
+
+async function init(){
+  let isServer = false;
+  let serverData = null;
+
+  try {
+    const res = await fetch('/api/data', { cache: 'no-store' });
+    if (res.ok){
+      serverData = await res.json();
+      if (serverData && serverData.ok) isServer = true;
+    }
+  } catch(e){}
+
+  const event = Object.assign({}, DEFAULT_EVENT, (serverData && serverData.event) || {});
+  const names = (serverData && serverData.names) || DEFAULT_PARTICIPANTS.map(p => p.name);
+  names.sort((a,b) => a.localeCompare(b));
+
+  $("evTitle").textContent = event.title;
+  document.title = event.title + " · Secret Santa";
+
+  // Render Event Details
+  const eventItems = [
+    ["📅 Date", event.date],
+    ["⏰ Time", event.time],
+    ["💸 Budget", event.budget],
+    ["📍 Place", event.place, "wide"],
+    ["📝 Note", event.note, "wide"]
+  ].filter(x => x[1]);
+
+  $("eventGrid").innerHTML = eventItems.map(([k, v, c]) => `
+    <div class="ev ${c || ""}"><div class="k">${k}</div><div class="v">${esc(v)}</div></div>
+  `).join("");
+
+  // Render Participants
+  $("partCount").textContent = names.length + " people";
+
+  let session = null;
+  try { session = JSON.parse(sessionStorage.getItem(AUTH_KEY)); } catch(e){}
+
+  function renderChips(){
+    const myName = session && session.user && session.user.name;
+    $("partChips").innerHTML = names.map(n => `
+      <span class="chip ${myName === n ? "me" : ""}">🎁 ${esc(n)}</span>
+    `).join("");
   }
-  function renderDraw(){
-    const el = $("drawStatus"), r = S.result;
-    $("drawBtn").textContent = r ? "🎲 Draw again" : "🎲 Draw names";
-    if (!r){ el.innerHTML = ""; return; }
-    if (!fresh()){ el.innerHTML = `<div class="status info">The list or rules changed since the last draw. Draw again before revealing.</div>`; return; }
-    el.innerHTML = `<div class="status ok">✓ Names drawn for <b>${Object.keys(r.map).length}</b> people. The results stay hidden until each person reveals their own.</div>`;
-  }
-  let mode = "phone";
-  function renderReveal(){
-    const body = $("revealBody"), r = S.result;
-    document.querySelectorAll(".tab").forEach(t => t.classList.toggle("on", t.dataset.mode === mode));
-    if (!fresh()){ body.innerHTML = `<p class="hint">Draw names first.</p>`; return; }
-    const givers = names();
-    if (mode === "phone"){
-      body.innerHTML = `<p class="hint">Hand the phone around. Each person taps their own name, reads their match, then hides it.</p>
-        <div class="names">${givers.map(g => `<button class="name-btn ${S.seen[g] ? "seen" : ""}" data-g="${esc(g)}"><span>${esc(g)}</span><span>${S.seen[g] ? "✓" : "🎁"}</span></button>`).join("")}</div>
-        <div class="row" style="margin-top:10px"><button class="btn link" id="resetSeen">Reset checkmarks</button></div>`;
-      body.querySelectorAll(".name-btn").forEach(b => b.onclick = () => askReveal(b.dataset.g));
-      $("resetSeen").onclick = () => { S.seen = {}; save(); renderReveal(); };
+
+  function renderAuth(){
+    const area = $("authContent");
+    const portalFooter = $("portalFooter");
+
+    if (!session){
+      portalFooter.style.display = "block";
+      area.innerHTML = `
+        <p class="hint">Select your name from the form and enter your 6-digit passcode.</p>
+        
+        <label for="loginName">Your name</label>
+        <select id="loginName">
+          <option value="">-- Choose your name --</option>
+          ${names.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join("")}
+        </select>
+
+        <label for="loginPass">Your passcode</label>
+        <input id="loginPass" type="password" placeholder="e.g. 123456" maxlength="20" autocomplete="off">
+
+        <div id="loginErr"></div>
+
+        <button class="btn red big" id="loginBtn">Reveal My Match 🎁</button>
+      `;
+
+      $("loginBtn").onclick = doLogin;
+      $("loginPass").addEventListener("keydown", e => { if (e.key === "Enter") doLogin(); });
     } else {
-      if (!r.codes) r.codes = {};
-      givers.forEach(g => { if (!r.codes[g]) r.codes[g] = encodeCode(g, r.map[g], wishOf(r.map[g])); });
-      save();
-      body.innerHTML = `<p class="hint">Copy each person's message and send it privately (Zalo, Messenger…). They open this page, tap <b>I have a code</b>, and paste it in.</p>
-        <label for="link">Link to this page (optional, added to every message)</label>
-        <input id="link" placeholder="e.g. your GitHub Pages link" value="${esc(S.link)}">
-        <div style="margin-top:12px">${givers.map(g => `<div class="code-row"><div><b>${esc(g)}</b><div class="mono">${esc(r.codes[g])}</div></div><button class="btn small" data-copy="${esc(g)}">Copy message</button></div>`).join("")}</div>`;
-      $("link").oninput = e => { S.link = e.target.value.trim(); save(); };
-      body.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => copyText(codeMessage(b.dataset.copy, r.codes[b.dataset.copy], S.event, S.link), b));
+      portalFooter.style.display = "none";
+      const user = session.user;
+      const match = session.match;
+      const isOrganizer = session.isOrganizer;
+
+      let matchHtml = "";
+      if (!session.drawn){
+        matchHtml = `<div class="status info">Names haven't been drawn yet. Check back soon!</div>`;
+      } else if (match){
+        matchHtml = `
+          <div class="reveal-box">
+            <div class="hint" style="margin:0;font-size:15px;color:#7a5a13">🎅 <b>${esc(user.name)}</b>, you are the Secret Santa for:</div>
+            <div class="to">${esc(match.name)}</div>
+            <div class="wish-box">
+              <b>🎁 Their Wishlist:</b>
+              <div style="margin-top:6px;white-space:pre-line;color:var(--ink)">${match.wishlist ? esc(match.wishlist) : "<i>Quà gì cũng nhận!</i>"}</div>
+              ${match.fb ? `<div style="margin-top:10px;font-size:13.5px"><a href="${esc(match.fb)}" target="_blank" rel="noopener" style="color:var(--green);font-weight:600;text-decoration:none">🔗 Facebook liên hệ</a></div>` : ""}
+            </div>
+            <p class="hint" style="margin:12px 0 0">Shhh... Keep it secret until the party! 🤫</p>
+          </div>
+        `;
+      }
+
+      area.innerHTML = `
+        <div class="row" style="justify-content:space-between;padding-bottom:12px;border-bottom:1px solid var(--line)">
+          <div>
+            <div style="font-size:17px;font-weight:700;color:var(--green)">👋 Welcome, ${esc(user.name)}!</div>
+            <div class="hint" style="margin:0">Logged in successfully</div>
+          </div>
+          <div class="row">
+            ${isOrganizer ? '<button class="btn small" id="orgQuickBtn" style="background:var(--gold);color:#fff">Organizer Panel</button>' : ''}
+            <button class="btn small link" id="logoutBtn" style="color:var(--red)">Log out</button>
+          </div>
+        </div>
+
+        ${matchHtml}
+
+        <div style="margin-top:16px;padding:14px 16px;background:#fbfbfb;border-radius:14px;border:1px solid var(--line)">
+          <div class="row" style="justify-content:space-between">
+            <b style="font-size:14px;color:var(--ink)">Your Submitted Wishlist:</b>
+            <button class="btn small ghost" id="editWishBtn">Edit Wishlist</button>
+          </div>
+          <div style="font-size:14px;margin-top:5px;color:var(--muted);white-space:pre-line">${user.wishlist ? esc(user.wishlist) : "<i>None</i>"}</div>
+        </div>
+      `;
+
+      if ($("orgQuickBtn")) $("orgQuickBtn").onclick = () => openOrganizerModal("512435");
+
+      $("logoutBtn").onclick = () => {
+        session = null;
+        try { sessionStorage.removeItem(AUTH_KEY); } catch(e){}
+        renderAuth();
+        renderChips();
+      };
+
+      $("editWishBtn").onclick = () => {
+        openModal(`
+          <h3>Edit your wishlist</h3>
+          <p class="hint">Update the 3 gifts you'd love your Secret Santa to give you:</p>
+          <textarea id="newWish" style="min-height:120px">${esc(user.wishlist || "")}</textarea>
+          <div id="wishMsg"></div>
+          <div class="row" style="margin-top:14px;justify-content:flex-end">
+            <button class="btn" id="saveWish">Save changes</button>
+          </div>
+        `);
+        $("saveWish").onclick = async () => {
+          const w = $("newWish").value.trim();
+          if (isServer){
+            try {
+              const res = await fetch('/api/update-wishlist', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({ name: user.name, passcode: session.passcode, wishlist: w })
+              });
+              const d = await res.json();
+              if (d.ok){
+                user.wishlist = w;
+                session.user.wishlist = w;
+                sessionStorage.setItem(AUTH_KEY, JSON.stringify(session));
+                closeModal();
+                renderAuth();
+              } else {
+                $("wishMsg").innerHTML = `<div class="status warn">${esc(d.error || "Failed")}</div>`;
+              }
+            } catch(e){
+              $("wishMsg").innerHTML = `<div class="status warn">Error saving.</div>`;
+            }
+          } else {
+            user.wishlist = w;
+            session.user.wishlist = w;
+            sessionStorage.setItem(AUTH_KEY, JSON.stringify(session));
+            closeModal();
+            renderAuth();
+          }
+        };
+      };
     }
   }
-  function renderAll(){ renderEvent(); renderNames(); renderDraw(); renderReveal(); }
-  function askReveal(g){
-    openModal(`<h3>Are you ${esc(g)}?</h3><p class="hint">Make sure nobody else can see the screen.</p>
-      <div class="row"><button class="btn red" id="yes">Yes, show me</button><button class="btn ghost" data-close>Not me</button></div>`);
-    $("yes").onclick = () => {
-      const r = S.result.map[g];
-      openModal(revealHTML(g, r, wishOf(r), S.event) + `<div class="row" style="justify-content:center"><button class="btn" id="hide">Got it, hide this</button></div>`);
-      $("hide").onclick = () => { S.seen[g] = true; save(); closeModal(); renderReveal(); };
-    };
-  }
-  function draw(){
-    if (parse().dupes.length){ $("drawStatus").innerHTML = `<div class="status warn">Fix the duplicate names first.</div>`; return; }
-    const r = attempt(names(), S.forced, S.excl, S.loop);
-    if (!r.ok){ $("drawStatus").innerHTML = `<div class="status warn">${esc(r.reason)}</div>`; return; }
-    S.result = {map:r.map, sig:signature(), fallback:r.fallback, codes:{}};
-    S.seen = {}; save(); renderDraw(); renderReveal();
-  }
-  function openOrg(msg){
-    const ns = names(), r = S.result, ok = fresh();
-    const forcedSet = new Set(S.forced.map(f => f[0] + "\u0000" + f[1]));
-    openModal(`<div class="org"><h3>🎩 Organizer controls</h3>
-      <p class="hint">Only you see this. Rules apply the next time you draw. Everyone else stays random.</p>
-      ${msg ? `<div class="status ${msg[0]}">${esc(msg[1])}</div>` : ""}
-      ${rulesHTML(ns, x => x, S.forced, S.excl, S.loop)}
-      <div class="row"><button class="btn small ghost" id="check">Check rules</button><button class="btn small red" id="drawNow">Draw with these rules</button></div>
-      <h4>Full results</h4>
-      ${ok ? `${r.fallback ? `<div class="status info">A single loop wasn't possible with these rules, so a regular draw was used.</div>` : ""}
-        <table>${Object.entries(r.map).map(([g, t]) => `<tr><td>${esc(g)}</td><td class="arrow">→</td><td><b>${esc(t)}</b> ${forcedSet.has(g + "\u0000" + t) ? "🔒" : ""}</td></tr>`).join("")}</table>
-        <div class="row" style="margin-top:10px"><button class="btn small" id="copyAll">Copy all results</button></div>`
-        : `<p class="hint">${r ? "Out of date. Draw again." : "No draw yet."}</p>`}
-      ${passHTML(S.pass)}
-      <div class="row" style="justify-content:space-between;margin-top:18px"><button class="btn link" id="wipe" style="color:var(--red)">Clear everything</button><button class="btn" data-close>Done</button></div>
-    </div>`);
-    wireRules(S, () => { save(); renderAll(); }, openOrg);
-    wirePass(S, save, openOrg);
-    $("check").onclick = () => { const t = attempt(names(), S.forced, S.excl, S.loop); openOrg(t.ok ? ["ok", t.fallback ? "Works, but only as a regular draw (no single loop)." : "✓ These rules work."] : ["warn", t.reason]); };
-    $("drawNow").onclick = () => { draw(); openOrg(fresh() ? ["ok", "Drawn ✓"] : ["warn", $("drawStatus").textContent || "Couldn't draw."]); };
-    if ($("copyAll")) $("copyAll").onclick = e => copyText(`${S.event.title}\n` + Object.entries(r.map).map(([g, t]) => `${g} → ${t}`).join("\n"), e.target);
-    $("wipe").onclick = () => {
-      openModal(`<h3>Clear everything?</h3><p class="hint">This removes names, rules, results, passcode and event details from this browser.</p>
-        <div class="row"><button class="btn red" id="wipeYes">Yes, clear it</button><button class="btn ghost" id="wipeNo">Cancel</button></div>`);
-      $("wipeNo").onclick = () => openOrg();
-      $("wipeYes").onclick = () => { try { localStorage.removeItem(LKEY); } catch(e){} location.reload(); };
-    };
-  }
 
-  $("names").value = S.raw;
-  $("names").addEventListener("input", e => { S.raw = e.target.value; save(); renderNames(); renderDraw(); renderReveal(); });
-  $("sample").onclick = () => { S.raw = SAMPLE; $("names").value = SAMPLE; save(); renderAll(); };
-  $("drawBtn").onclick = draw;
-  $("haveCodeBtn").onclick = openCodeEntry;
-  document.querySelectorAll(".tab").forEach(t => t.onclick = () => { mode = t.dataset.mode; renderReveal(); });
-  onSecret = () => askPass(S.pass, openOrg);
-  renderAll();
-}
+  async function doLogin(){
+    const name = $("loginName").value;
+    const passcode = $("loginPass").value.trim();
+    const errBox = $("loginErr");
+    errBox.innerHTML = "";
 
-/* =====================================================================
-   SHARED MODE (claude.ai): everyone signs in, one live list.
-   people/<id>   {nick, wish, linked, joinedAt}  everyone reads, each edits own, organizer edits all
-   matches/<id>  {to}                            only that person (and the organizer) can read
-   meta/event, meta/state                        everyone reads, organizer writes
-   Rigging rules never leave the organizer's browser.
-   ===================================================================== */
-function startShared(db, user, me, owner){
-  $("sub").textContent = "Gift exchange · live list";
-  $("foot").textContent = "Made with 🎁 · Only you can see who you're buying for";
-  const SH = {event:Object.assign({}, DEFAULT_EVENT), state:null, people:{}, profiles:{}, myMatch:undefined, all:{},
-              loaded:false, slow:false, err:"", canWrite:null, editing:false, revealed:false, busy:"", drawMsg:null};
-  const O = load(OKEY, {forced:[], excl:[], loop:true, pass:"", link:""});
-  const saveO = () => store(OKEY, O);
-
-  app.innerHTML = `<div id="evWrap"></div><div id="statusWrap"></div><div id="youWrap"></div><div id="matchWrap"></div><div id="whoWrap"></div><div id="ownerWrap"></div><div id="drawWrap"></div><div id="codeWrap"></div>`;
-
-  const order = () => Object.keys(SH.people).sort((a, b) => (SH.people[a].joinedAt || 0) - (SH.people[b].joinedAt || 0));
-  const nameOf = id => { const p = SH.people[id]; return (p && p.nick) || (SH.profiles[id] && SH.profiles[id].name) || "Someone"; };
-  const errText = e => (e && (e.message || e.code)) || "Something went wrong.";
-  const drawn = () => !!(SH.state && SH.state.drawn);
-  const stale = () => drawn() && JSON.stringify((SH.state.ids || []).slice().sort()) !== JSON.stringify(order().slice().sort());
-
-  /* live subscriptions (each opened once) */
-  const timer = setTimeout(() => { if (!SH.loaded || SH.cacheOnly){ SH.slow = true; render(); } }, 10000);
-  const fail = e => { SH.err = errText(e); clearTimeout(timer); SH.loaded = true; render(); };
-  db.doc("meta/event").onSnapshot(s => { SH.event = Object.assign({}, DEFAULT_EVENT, s.exists ? s.data() : {}); render(); }, fail);
-  db.doc("meta/state").onSnapshot(s => { SH.state = s.exists ? s.data() : null; render(); }, fail);
-  db.collection("people").onSnapshot(q => {
-    const p = {}; q.docs.forEach(d => p[d.id] = d.data()); SH.people = p;
-    SH.loaded = true; SH.cacheOnly = q.metadata && q.metadata.fromCache;
-    if (!SH.cacheOnly){ clearTimeout(timer); SH.slow = false; }
-    loadProfiles(); render();
-  }, fail);
-  if (me) db.doc("matches/" + me).onSnapshot(s => { SH.myMatch = s.exists ? ((s.data() || {}).to || null) : null; render(); }, fail);
-  if (owner) db.collection("matches").onSnapshot(q => { const m = {}; q.docs.forEach(d => m[d.id] = (d.data() || {}).to); SH.all = m; render(); }, fail);
-
-  async function loadProfiles(){
-    if (!user || typeof user.profiles !== "function") return;
-    const ids = Object.keys(SH.people).filter(id => SH.people[id].linked);
-    if (!ids.length) return;
-    try { SH.profiles = (await user.profiles(ids)) || {}; render(); } catch(e){}
-  }
-
-  function render(){
-    $("evWrap").innerHTML = eventCardHTML(SH.event, owner);
-    if (owner) $("editEvent").onclick = () => openEventEditor(SH.event, async ev => {
-      try { await db.doc("meta/event").set(ev); } catch(e){ SH.err = "Couldn't save the event: " + errText(e); render(); }
-    });
-    if (!SH.loaded){
-      $("statusWrap").innerHTML = `<div class="card"><p class="hint" style="margin:0">${SH.slow ? "Can't reach the shared list yet. Check your connection; this page keeps trying." : "Loading the exchange…"}</p></div>`;
+    if (!name){
+      errBox.innerHTML = `<div class="status warn">Please choose your name.</div>`;
       return;
     }
-    $("statusWrap").innerHTML = (SH.err ? `<div class="status warn" style="margin-bottom:16px">${esc(SH.err)}</div>` : "")
-      + (SH.slow ? `<div class="status info" style="margin-bottom:16px">Showing saved data. It may be out of date.</div>` : "");
-    if (!SH.editing) renderYou();
-    renderMatch(); renderWho();
-    if (owner){ renderOwner(); renderDraw(); }
-    $("codeWrap").innerHTML = `<p style="text-align:center;margin:0"><button class="btn link" id="codeLink">Got a code instead?</button></p>`;
-    $("codeLink").onclick = openCodeEntry;
+    if (!passcode){
+      errBox.innerHTML = `<div class="status warn">Please enter your passcode.</div>`;
+      return;
+    }
+
+    if (isServer){
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ name, passcode })
+        });
+        const data = await res.json();
+        if (!data.ok){
+          errBox.innerHTML = `<div class="status warn">${esc(data.error || "Incorrect passcode.")}</div>`;
+          return;
+        }
+
+        session = {
+          user: data.user,
+          match: data.match,
+          drawn: data.drawn,
+          isOrganizer: data.isOrganizer,
+          passcode: passcode
+        };
+        sessionStorage.setItem(AUTH_KEY, JSON.stringify(session));
+        renderAuth();
+        renderChips();
+      } catch(e){
+        errBox.innerHTML = `<div class="status warn">Connection error.</div>`;
+      }
+    } else {
+      // Local fallback
+      const person = DEFAULT_PARTICIPANTS.find(p => p.name === name);
+      if (!person || person.passcode.trim() !== passcode){
+        errBox.innerHTML = `<div class="status warn">Incorrect passcode. Please check the passcode from the form.</div>`;
+        return;
+      }
+      const localMatches = {
+        "Timi": "Có tiền sẽ tham gia.",
+        "Có tiền sẽ tham gia.": "hariwon",
+        "hariwon": "I Love New York City (ILOVENYC)",
+        "I Love New York City (ILOVENYC)": "ad",
+        "ad": "hua minh quan",
+        "hua minh quan": "LMK",
+        "LMK": "Timi"
+      };
+      const tName = localMatches[name];
+      const target = DEFAULT_PARTICIPANTS.find(p => p.name === tName) || { name: tName, wishlist: "" };
+
+      session = {
+        user: { name: person.name, wishlist: person.wishlist, fb: person.fb },
+        match: { name: target.name, wishlist: target.wishlist, fb: target.fb },
+        drawn: true,
+        isOrganizer: (person.name === "ad" || passcode === "512435"),
+        passcode: passcode
+      };
+      sessionStorage.setItem(AUTH_KEY, JSON.stringify(session));
+      renderAuth();
+      renderChips();
+    }
   }
 
-  /* ---- your spot ---- */
-  function renderYou(){
-    const w = $("youWrap"), mine = me && SH.people[me];
-    if (!me){ w.innerHTML = `<section class="card"><h2>👋 Join</h2><p class="hint">Sign in to Claude to join this exchange.</p></section>`; return; }
-    if (!mine && SH.canWrite === false){
-      w.innerHTML = `<section class="card"><h2>👋 You're not on the list yet</h2><p class="hint">You can view this page but can't add yourself. Ask the organizer to add you.</p></section>`; return;
+  /* ---------------- ORGANIZER DASHBOARD (Secret / Admin Access) ---------------- */
+  async function openOrganizerModal(pw, msg){
+    let adminData = null;
+    try {
+      const res = await fetch('/api/admin?passcode=' + encodeURIComponent(pw));
+      if (res.ok) {
+        const d = await res.json();
+        if (d.ok) adminData = d.data;
+      }
+    } catch(e){}
+
+    if (!adminData){
+      promptOrganizerLogin();
+      return;
     }
-    if (mine && SH.canWrite === false){
-      w.innerHTML = `<section class="card"><h2>🙋 You're in, ${esc(nameOf(me))}!</h2><p class="hint">Your wishlist: ${mine.wish ? esc(mine.wish) : "<i>none yet</i>"}</p><p class="hint">To change it, message the organizer.</p></section>`; return;
-    }
-    w.innerHTML = `<section class="card">
-      <h2>${mine ? `🙋 You're in, ${esc(nameOf(me))}!` : "👋 Join the exchange"}</h2>
-      ${!mine && drawn() ? `<div class="status info">Names were already drawn. If you join now, the organizer has to draw again.</div>` : ""}
-      <label for="youNick">Your name (what friends call you)</label>
-      <input id="youNick" maxlength="40" value="${esc(mine ? mine.nick || "" : "")}" placeholder="e.g. Linh">
-      <label for="youWish">Your wishlist <span class="hint">(your Secret Santa sees this)</span></label>
-      <textarea id="youWish" maxlength="400" style="min-height:90px" placeholder="Sizes, favorite things, what you'd love, what to avoid…">${esc(mine ? mine.wish || "" : "")}</textarea>
-      <div id="youMsg"></div>
-      <div class="row" style="margin-top:10px">
-        <button class="btn ${mine ? "" : "red"}" id="youSave">${mine ? "Save changes" : "Join 🎁"}</button>
-        ${mine && !drawn() ? '<button class="btn link" id="youLeave">Leave the exchange</button>' : ""}
-      </div></section>`;
-    ["youNick", "youWish"].forEach(id => $(id).addEventListener("input", () => SH.editing = true));
-    $("youSave").onclick = async () => {
-      const nick = $("youNick").value.trim(), wish = $("youWish").value.trim();
-      if (!nick){ $("youMsg").innerHTML = `<div class="status warn">Add your name so people know who you are.</div>`; return; }
-      $("youSave").disabled = true;
+
+    const matches = adminData.matches || {};
+    const participants = adminData.participants || DEFAULT_PARTICIPANTS;
+    const forced = adminData.forced || [];
+    const excl = adminData.excl || [];
+    const pNames = participants.map(p => p.name).sort((a,b) => a.localeCompare(b));
+    const opts = ph => `<option value="">${ph}</option>` + pNames.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join("");
+
+    openModal(`
+      <div class="org">
+        <h3>🎩 Organizer Dashboard</h3>
+        <p class="hint">Secret Santa pairings, redraw tool, and participant management.</p>
+        ${msg ? `<div class="status ${msg[0]}">${esc(msg[1])}</div>` : ""}
+
+        <div class="row" style="margin:14px 0 18px">
+          <button class="btn red" id="dashDrawBtn">🎲 Redraw Names</button>
+          <button class="btn ghost small" id="dashCopyBtn">Copy All Pairings</button>
+        </div>
+
+        <h4>All Pairings (${Object.keys(matches).length})</h4>
+        ${Object.keys(matches).length ? `
+          <table>
+            <thead><tr><th style="text-align:left;padding-bottom:6px">Giver</th><th></th><th style="text-align:left;padding-bottom:6px">Receiver</th></tr></thead>
+            <tbody>
+              ${Object.entries(matches).map(([g, r]) => `
+                <tr>
+                  <td><b>${esc(g)}</b></td>
+                  <td class="arrow">→</td>
+                  <td style="color:var(--red);font-weight:600">${esc(r)}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        ` : `<p class="hint">No draw yet.</p>`}
+
+        <h4>Participants & Form Passcodes</h4>
+        <div style="max-height:160px;overflow-y:auto;border:1px solid var(--line);border-radius:12px;padding:8px 12px;background:#faf8f5">
+          ${participants.map(p => `
+            <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:13px;border-bottom:1px solid #efe8dd">
+              <span><b>${esc(p.name)}</b></span>
+              <span class="mono">Passcode: <b>${esc(p.passcode)}</b></span>
+            </div>
+          `).join("")}
+        </div>
+
+        <h4>Forced Pairs</h4>
+        ${forced.map((f, i) => `<div class="rule"><span>${esc(f[0])} → <b>${esc(f[1])}</b></span><button class="del" data-del-f="${i}">×</button></div>`).join("") || '<p class="hint">None.</p>'}
+        <div class="grid3" style="margin-top:8px">
+          <select id="fGiver">${opts("Giver…")}</select>
+          <span>gives to</span>
+          <select id="fRecv">${opts("Receiver…")}</select>
+          <button class="btn small" id="addForced">Add</button>
+        </div>
+
+        <h4>Exclusions</h4>
+        ${excl.map((x, i) => `<div class="rule"><span>${esc(x[0])} ✕ ${esc(x[1])}</span><button class="del" data-del-x="${i}">×</button></div>`).join("") || '<p class="hint">None.</p>'}
+        <div class="grid3" style="margin-top:8px">
+          <select id="xPersonA">${opts("Person A…")}</select>
+          <span>cannot draw</span>
+          <select id="xPersonB">${opts("Person B…")}</select>
+          <button class="btn small" id="addExcl">Add</button>
+        </div>
+
+        <div class="row" style="justify-content:flex-end;margin-top:20px">
+          <button class="btn" data-close>Done</button>
+        </div>
+      </div>
+    `);
+
+    $("dashDrawBtn").onclick = async () => {
       try {
-        const ref = db.doc("people/" + me);
-        if (mine) await ref.update({nick, wish}); else await ref.set({nick, wish, linked:true, joinedAt:Date.now()});
-        SH.canWrite = true; SH.editing = false; render();
+        const res = await fetch('/api/draw', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ passcode: pw })
+        });
+        const d = await res.json();
+        if (d.ok){
+          openOrganizerModal(pw, ["ok", "New matches successfully drawn!"]);
+        } else {
+          openOrganizerModal(pw, ["warn", d.error || "Draw failed."]);
+        }
       } catch(e){
-        SH.editing = false;
-        if (e && e.code === "invalid_argument"){ SH.canWrite = false; render(); }
-        else { $("youSave").disabled = false; $("youMsg").innerHTML = `<div class="status warn">Couldn't save: ${esc(errText(e))}</div>`; }
+        openOrganizerModal(pw, ["warn", "Connection error."]);
       }
     };
-    if ($("youLeave")) $("youLeave").onclick = () => {
-      openModal(`<h3>Leave the exchange?</h3><p class="hint">Your name and wishlist will be removed.</p><div class="row"><button class="btn red" id="leaveYes">Leave</button><button class="btn ghost" data-close>Stay</button></div>`);
-      $("leaveYes").onclick = async () => { closeModal(); try { await db.doc("people/" + me).delete(); SH.editing = false; } catch(e){ SH.err = errText(e); } render(); };
+
+    $("dashCopyBtn").onclick = e => {
+      const txt = Object.entries(matches).map(([g, r]) => `${g} → ${r}`).join("\n");
+      copyText(txt, e.target);
     };
-  }
 
-  /* ---- your match ---- */
-  function renderMatch(){
-    const w = $("matchWrap"), mine = me && SH.people[me];
-    if (!mine){ w.innerHTML = ""; return; }
-    let body;
-    if (!drawn()) body = `<p class="hint" style="margin:0">Names haven't been drawn yet. Your match will show up here once the organizer draws. Add your wishlist while you wait!</p>`;
-    else if (SH.myMatch === undefined) body = `<p class="hint" style="margin:0">Checking…</p>`;
-    else if (!SH.myMatch || !SH.people[SH.myMatch]) body = `<p class="hint" style="margin:0">Names were drawn before you joined, or the list changed. The organizer needs to draw again.</p>`;
-    else if (!SH.revealed) body = `<p class="hint">Make sure nobody else is looking at your screen.</p><button class="btn red reveal-btn" id="revealBtn">🎁 Reveal who I'm buying for</button>`;
-    else { const r = SH.myMatch; body = revealHTML(nameOf(me), nameOf(r), (SH.people[r] || {}).wish, SH.event) + `<div class="row" style="justify-content:center"><button class="btn ghost" id="hideBtn">Hide</button></div><p class="hint" style="text-align:center">Their wishlist updates here live if they change it.</p>`; }
-    w.innerHTML = `<section class="card"><h2>🎁 Your match</h2>${body}</section>`;
-    if ($("revealBtn")) $("revealBtn").onclick = () => { SH.revealed = true; renderMatch(); };
-    if ($("hideBtn")) $("hideBtn").onclick = () => { SH.revealed = false; renderMatch(); };
-  }
-
-  /* ---- who's in ---- */
-  function renderWho(){
-    const ids = order();
-    $("whoWrap").innerHTML = `<section class="card"><h2>🧑‍🤝‍🧑 Who's in <span class="pill">${ids.length}</span></h2>
-      ${ids.length ? `<div class="chips">${ids.map(id => `<span class="chip ${id === me ? "me" : ""}">${esc(nameOf(id))}${SH.people[id].wish ? " ✓" : ""}</span>`).join("")}</div><p class="hint" style="margin:8px 0 0">✓ = wishlist added</p>`
-        : `<p class="hint" style="margin:0">Nobody yet. Be the first to join!</p>`}</section>`;
-  }
-
-  /* ---- organizer: participants (visible to the owner only) ---- */
-  function renderOwner(){
-    const ids = order();
-    $("ownerWrap").innerHTML = `<section class="card"><h2>🧑‍🎄 Organizer: participants</h2>
-      <p class="hint">Only you see this card. Add friends who can't add themselves, fix names and wishlists, or remove people.</p>
-      ${ids.map(id => { const p = SH.people[id]; const offline = !p.linked;
-        return `<div class="prow"><div><b>${esc(nameOf(id))}</b> ${offline ? '<span class="pill">no account</span>' : ""}
-          <div class="hint" style="margin:0">${p.wish ? esc(p.wish) : "<i>no wishlist</i>"}</div></div>
-          <div class="acts">${offline && drawn() && SH.all[id] && SH.people[SH.all[id]] ? `<button class="btn small" data-code="${esc(id)}">Copy code</button>` : ""}
-          <button class="icon" data-edit="${esc(id)}" title="Edit">✎</button><button class="icon del" data-rm="${esc(id)}" title="Remove">×</button></div></div>`; }).join("") || '<p class="hint">No participants yet.</p>'}
-      <div class="row" style="margin-top:12px"><button class="btn small ghost" id="addLinked">+ Add someone I shared this page with</button><button class="btn small ghost" id="addOffline">+ Add someone without an account</button></div>
-    </section>`;
-    $("ownerWrap").querySelectorAll("[data-edit]").forEach(b => b.onclick = () => editPerson(b.dataset.edit));
-    $("ownerWrap").querySelectorAll("[data-rm]").forEach(b => b.onclick = () => removePerson(b.dataset.rm));
-    $("ownerWrap").querySelectorAll("[data-code]").forEach(b => b.onclick = () => {
-      const g = b.dataset.code, r = SH.all[g];
-      copyText(codeMessage(nameOf(g), encodeCode(nameOf(g), nameOf(r), (SH.people[r] || {}).wish), SH.event, O.link), b);
-    });
-    $("addLinked").onclick = openSearch;
-    $("addOffline").onclick = () => editPerson(null);
-  }
-  function editPerson(id){
-    const p = id ? SH.people[id] : {nick:"", wish:""};
-    const ph = id && SH.profiles[id] && SH.profiles[id].name;
-    openModal(`<h3>${id ? "Edit " + esc(nameOf(id)) : "Add someone without an account"}</h3>
-      ${id ? "" : '<p class="hint">They won\'t log in. After the draw, you send them a private code to open on the public (GitHub) page.</p>'}
-      <label>Name</label><input id="pNick" maxlength="40" value="${esc(p.nick || "")}" placeholder="${esc(ph || "Name")}">
-      <label>Wishlist</label><textarea id="pWish" maxlength="400" style="min-height:90px">${esc(p.wish || "")}</textarea>
-      <div id="pMsg"></div><div class="row" style="margin-top:12px"><button class="btn" id="pSave">${id ? "Save" : "Add"}</button></div>`);
-    $("pSave").onclick = async () => {
-      const nick = $("pNick").value.trim(), wish = $("pWish").value.trim();
-      if (!id && !nick){ $("pMsg").innerHTML = `<div class="status warn">Add a name.</div>`; return; }
-      $("pSave").disabled = true;
-      try {
-        if (id) await db.doc("people/" + id).set(Object.assign({}, p, {nick, wish}));
-        else await db.doc("people/x-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7)).set({nick, wish, linked:false, joinedAt:Date.now()});
-        closeModal();
-      } catch(e){ $("pSave").disabled = false; $("pMsg").innerHTML = `<div class="status warn">Couldn't save: ${esc(errText(e))}</div>`; }
-    };
-  }
-  function removePerson(id){
-    openModal(`<h3>Remove ${esc(nameOf(id))}?</h3><p class="hint">${drawn() ? "Names are already drawn, so you'll need to draw again afterwards." : "They can join again later."}</p>
-      <div class="row"><button class="btn red" id="rmYes">Remove</button><button class="btn ghost" data-close>Cancel</button></div>`);
-    $("rmYes").onclick = async () => { closeModal(); try { await db.doc("people/" + id).delete(); } catch(e){ SH.err = "Couldn't remove: " + errText(e); render(); } };
-  }
-  function openSearch(){
-    if (!user || typeof user.search !== "function"){
-      openModal(`<h3>Search isn't available here</h3><p class="hint">Share this page with them and ask them to open it and tap <b>Join</b>, or add them without an account.</p>`); return;
-    }
-    openModal(`<h3>Add someone you shared this page with</h3><p class="hint">Only people who have access to this page show up.</p>
-      <input id="q" placeholder="Search by name or email" autocomplete="off"><div id="hits" style="margin-top:10px"></div>`);
-    let hits = [], t = null;
-    const run = async () => {
-      try { hits = (await user.search($("q") ? $("q").value.trim() : "")) || []; } catch(e){ hits = []; }
-      if (!$("hits")) return;
-      $("hits").innerHTML = hits.length ? hits.map((h, i) => `<div class="rule"><span>${esc(h.name || h.email || "Someone")}${SH.people[h.id] ? ' <span class="pill">already in</span>' : ""}</span>${SH.people[h.id] ? "" : `<button class="btn small" data-add="${i}">Add</button>`}</div>`).join("") : '<p class="hint">No matches.</p>';
-      $("hits").querySelectorAll("[data-add]").forEach(b => b.onclick = async () => {
-        const h = hits[+b.dataset.add]; b.disabled = true;
-        try { await db.doc("people/" + h.id).set({nick:"", wish:"", linked:true, joinedAt:Date.now()}); closeModal(); setTimeout(() => editPerson(h.id), 300); }
-        catch(e){ b.disabled = false; b.textContent = "Failed"; }
+    $("addForced").onclick = async () => {
+      const g = $("fGiver").value, r = $("fRecv").value;
+      if (!g || !r || g === r) return;
+      const newForced = (forced || []).filter(f => f[0] !== g);
+      newForced.push([g, r]);
+      await fetch('/api/admin/rules', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ passcode: pw, forced: newForced, excl: excl, loop: true })
       });
+      openOrganizerModal(pw, ["ok", "Forced pair added."]);
     };
-    $("q").addEventListener("focus", run);
-    $("q").addEventListener("input", () => { clearTimeout(t); t = setTimeout(run, 250); });
-    focusSoon("q");
+
+    $("addExcl").onclick = async () => {
+      const a = $("xPersonA").value, b = $("xPersonB").value;
+      if (!a || !b || a === b) return;
+      const newExcl = (excl || []).concat([[a, b], [b, a]]);
+      await fetch('/api/admin/rules', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ passcode: pw, forced: forced, excl: newExcl, loop: true })
+      });
+      openOrganizerModal(pw, ["ok", "Exclusion added."]);
+    };
+
+    document.querySelectorAll("[data-del-f]").forEach(b => {
+      b.onclick = async () => {
+        const newForced = forced.slice();
+        newForced.splice(+b.dataset.delF, 1);
+        await fetch('/api/admin/rules', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ passcode: pw, forced: newForced, excl: excl, loop: true })
+        });
+        openOrganizerModal(pw);
+      };
+    });
+
+    document.querySelectorAll("[data-del-x]").forEach(b => {
+      b.onclick = async () => {
+        const newExcl = excl.slice();
+        newExcl.splice(+b.dataset.delX, 1);
+        await fetch('/api/admin/rules', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ passcode: pw, forced: forced, excl: newExcl, loop: true })
+        });
+        openOrganizerModal(pw);
+      };
+    });
   }
 
-  /* ---- organizer: draw ---- */
-  function renderDraw(){
-    const n = order().length, st = SH.state;
-    let status = "";
-    if (SH.busy) status = `<div class="status info">${esc(SH.busy)}</div>`;
-    else if (SH.drawMsg) status = `<div class="status ${SH.drawMsg[0]}">${esc(SH.drawMsg[1])}</div>`;
-    else if (stale()) status = `<div class="status info">People joined or left since the last draw. Draw again so everyone has a match.</div>`;
-    else if (drawn()) status = `<div class="status ok">✓ Names drawn for ${(st.ids || []).length} people${st.at ? " on " + new Date(st.at).toLocaleDateString() : ""}. Everyone can see their own match.</div>`;
-    $("drawWrap").innerHTML = `<section class="card"><h2>🎲 Organizer: draw names</h2>
-      <p class="hint">${n} ${n === 1 ? "person" : "people"} in. When everyone has joined, draw. Each person then sees only their own match.</p>
-      <div class="row"><button class="btn red big" id="drawBtn" ${SH.busy ? "disabled" : ""}>${drawn() ? "🎲 Draw again" : "🎲 Draw names"}</button></div>${status}</section>`;
-    $("drawBtn").onclick = () => {
-      if (!drawn()) return publishDraw();
-      openModal(`<h3>Draw again?</h3><p class="hint">Everyone gets a new match. Anyone who already looked will see a different name.</p>
-        <div class="row"><button class="btn red" id="againYes">Draw again</button><button class="btn ghost" data-close>Cancel</button></div>`);
-      $("againYes").onclick = () => { closeModal(); publishDraw(); };
+  function promptOrganizerLogin(){
+    openModal(`
+      <h3>🎩 Organizer Access</h3>
+      <p class="hint">Enter the organizer passcode (<b>512435</b>) to view and manage pairings.</p>
+      <input id="orgPassInput" type="password" placeholder="Passcode" autocomplete="off">
+      <div id="orgPassErr"></div>
+      <div class="row" style="margin-top:14px;justify-content:flex-end">
+        <button class="btn red" id="orgSubmitBtn">Open Dashboard</button>
+      </div>
+    `);
+
+    const go = () => {
+      const val = $("orgPassInput").value.trim();
+      if (val === "512435"){
+        openOrganizerModal(val);
+      } else {
+        $("orgPassErr").innerHTML = `<div class="status warn">Incorrect organizer passcode.</div>`;
+      }
     };
+    $("orgSubmitBtn").onclick = go;
+    $("orgPassInput").addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+    setTimeout(() => { const el = $("orgPassInput"); if (el) el.focus(); }, 60);
   }
-  async function publishDraw(){
-    const ids = order();
-    const r = attempt(ids, O.forced, O.excl, O.loop, nameOf);
-    if (!r.ok){ SH.drawMsg = ["warn", r.reason]; render(); return false; }
-    SH.busy = "Saving matches…"; SH.drawMsg = null; render();
-    try {
-      for (const g of ids) await db.doc("matches/" + g).set({to:r.map[g]});
-      for (const g of Object.keys(SH.all)) if (!ids.includes(g)) await db.doc("matches/" + g).delete();
-      await db.doc("meta/state").set({drawn:true, at:Date.now(), ids:ids.slice().sort(), fallback:!!r.fallback});
-      SH.drawMsg = ["ok", `✓ Names drawn for ${ids.length} people. Everyone can now see their own match.`];
-      SH.busy = ""; render(); return true;
-    } catch(e){
-      SH.drawMsg = ["warn", "Couldn't save the draw: " + errText(e)]; SH.busy = ""; render(); return false;
+
+  // 1. Check URL query parameter: ?admin or #admin
+  if (window.location.search.includes('admin') || window.location.hash.includes('admin')){
+    promptOrganizerLogin();
+  }
+
+  // 2. Secret keyboard shortcut: Shift + O or Ctrl + Shift + A
+  document.addEventListener("keydown", e => {
+    if ((e.shiftKey && (e.key === "O" || e.key === "o")) || (e.ctrlKey && e.shiftKey && (e.key === "A" || e.key === "a"))){
+      if (!/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || "")){
+        promptOrganizerLogin();
+      }
     }
-  }
-  async function undoDraw(){
-    SH.busy = "Undoing the draw…"; render();
-    try {
-      for (const g of Object.keys(SH.all)) await db.doc("matches/" + g).delete();
-      await db.doc("meta/state").set({drawn:false});
-      SH.drawMsg = ["ok", "Draw undone. Nobody has a match now."];
-    } catch(e){ SH.drawMsg = ["warn", "Couldn't undo: " + errText(e)]; }
-    SH.busy = ""; render();
-  }
+  });
 
-  /* ---- hidden organizer panel ---- */
-  function openOrg(msg){
-    const ids = order();
-    const forcedSet = new Set(O.forced.map(f => f[0] + "\u0000" + f[1]));
-    const rows = Object.entries(SH.all).filter(([g]) => SH.people[g]);
-    openModal(`<div class="org"><h3>🎩 Organizer controls</h3>
-      <p class="hint">Only you can open this. Your rules are saved in this browser only, never online. Everyone else stays random.</p>
-      ${msg ? `<div class="status ${msg[0]}">${esc(msg[1])}</div>` : ""}
-      ${rulesHTML(ids, nameOf, O.forced, O.excl, O.loop)}
-      <div class="row"><button class="btn small ghost" id="check">Check rules</button><button class="btn small red" id="drawNow">Draw with these rules</button></div>
-      <h4>Full results</h4>
-      ${drawn() && rows.length ? `${SH.state.fallback ? `<div class="status info">A single loop wasn't possible, so a regular draw was used.</div>` : ""}${stale() ? `<div class="status info">Out of date: the list changed. Draw again.</div>` : ""}
-        <table>${rows.map(([g, t]) => `<tr><td>${esc(nameOf(g))}</td><td class="arrow">→</td><td><b>${esc(SH.people[t] ? nameOf(t) : "(removed)")}</b> ${forcedSet.has(g + "\u0000" + t) ? "🔒" : ""}</td></tr>`).join("")}</table>
-        <div class="row" style="margin-top:10px"><button class="btn small" id="copyAll">Copy all results</button><button class="btn link" id="undo" style="color:var(--red)">Undo the draw</button></div>`
-        : `<p class="hint">No draw yet.</p>`}
-      <h4>Link for code messages</h4>
-      <p class="hint" style="margin-top:0">For people without an account: the public page where they paste their code (e.g. your GitHub Pages link).</p>
-      <input id="olink" value="${esc(O.link)}" placeholder="https://…">
-      ${passHTML(O.pass)}
-      <div class="row" style="justify-content:flex-end;margin-top:18px"><button class="btn" data-close>Done</button></div>
-    </div>`);
-    wireRules(O, () => { saveO(); render(); }, openOrg);
-    wirePass(O, saveO, openOrg);
-    $("olink").oninput = e => { O.link = e.target.value.trim(); saveO(); };
-    $("check").onclick = () => { const t = attempt(ids, O.forced, O.excl, O.loop, nameOf); openOrg(t.ok ? ["ok", t.fallback ? "Works, but only as a regular draw (no single loop)." : "✓ These rules work."] : ["warn", t.reason]); };
-    $("drawNow").onclick = async () => { const b = $("drawNow"); b.disabled = true; b.textContent = "Drawing…"; const ok = await publishDraw(); openOrg(ok ? ["ok", "Drawn ✓"] : ["warn", (SH.drawMsg || [, "Couldn't draw."])[1]]); };
-    if ($("copyAll")) $("copyAll").onclick = e => copyText(`${SH.event.title}\n` + rows.map(([g, t]) => `${nameOf(g)} → ${nameOf(t)}`).join("\n"), e.target);
-    if ($("undo")) $("undo").onclick = () => {
-      openModal(`<h3>Undo the draw?</h3><p class="hint">Everyone's match is deleted. You can draw again afterwards.</p>
-        <div class="row"><button class="btn red" id="undoYes">Undo</button><button class="btn ghost" id="undoNo">Cancel</button></div>`);
-      $("undoNo").onclick = () => openOrg();
-      $("undoYes").onclick = async () => { await undoDraw(); openOrg(SH.drawMsg); };
-    };
-  }
-  onSecret = owner ? () => askPass(O.pass, openOrg) : null;
-  render();
+  renderAuth();
+  renderChips();
 }
 
-/* =====================================================================
-   Startup: shared mode when the page runs on claude.ai with storage,
-   offline mode everywhere else (GitHub Pages, local file, signed out).
-   ===================================================================== */
-const hasRuntime = () => !!(window.claude && typeof window.claude.use === "function");
-const within = (p, ms) => Promise.race([Promise.resolve(p).catch(() => null), new Promise(r => setTimeout(() => r(null), ms))]);
-async function trySharedThen(fallback){
-  const db = await within(window.claude.use("db"), 12000);
-  if (!db) return fallback();
-  const user = await within(window.claude.use("user"), 5000);
-  let me = null, owner = false;
-  if (user){
-    try { me = await user.id(); } catch(e){}
-    try { owner = !!(await user.isOwner()); } catch(e){}
-  }
-  if (me && !/^[A-Za-z0-9_\-.~:@+]{1,200}$/.test(me)) me = null;
-  startShared(db, user, me, owner);
-}
-let started = false;
-function boot(){
-  if (hasRuntime()){ started = true; trySharedThen(startLocal); return; }
-  /* No runtime yet: give it a moment to appear, otherwise go offline. */
-  let tries = 0;
-  const iv = setInterval(() => {
-    if (started) return clearInterval(iv);
-    if (hasRuntime()){ clearInterval(iv); started = true; trySharedThen(startLocal); }
-    else if (++tries > 10){ clearInterval(iv); started = true; startLocal(); }
-  }, 150);
-}
-boot();
+init();
 })();
 </script>
 </body>
